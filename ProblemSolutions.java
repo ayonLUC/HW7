@@ -1,7 +1,7 @@
 /******************************************************************
  *
  *   YOUR NAME / SECTION NUMBER
- *
+ *      Salvador Ayon / COMP 272 002
  *   This java file contains the problem solutions for the methods selectionSort,
  *   mergeSortDivisibleByKFirst, asteroidsDestroyed, and numRescueCanoes methods.
  *
@@ -13,26 +13,26 @@ public class ProblemSolutions {
 
     /**
      * Method SelectionSort
-     *
+     * <p>
      * This method performs a selection sort. This file will be spot checked,
      * so ENSURE you are performing a Selection Sort!
-     *
+     * <p>
      * This is an in-place sorting operation that has two function signatures. This
      * allows the second parameter to be optional, and if not provided, defaults to an
      * ascending sort. If the second parameter is provided and is false, a descending
      * sort is performed.
      *
-     * @param values        - int[] array to be sorted.
-     * @param ascending     - if true,method performs an ascending sort, else descending.
-     *                        There are two method signatures allowing this parameter
-     *                        to not be passed and defaulting to 'true (or ascending sort).
+     * @param values    - int[] array to be sorted.
+     * @param - if true,method performs an ascending sort, else descending.
+     *                  There are two method signatures allowing this parameter
+     *                  to not be passed and defaulting to 'true (or ascending sort).
      */
 
-    public  void selectionSort(int[] values) {
+    public void selectionSort(int[] values) {
         selectionSort(values, true);
     }
 
-    public static void selectionSort(int[] values, boolean ascending ) {
+    public static void selectionSort(int[] values, boolean ascending) {
 
         int n = values.length;
 
@@ -41,38 +41,53 @@ public class ProblemSolutions {
             // YOU CODE GOES HERE -- COMPLETE THE INNER LOOP OF THIS
             // "SELECTION SORT" ALGORITHM.
             // DO NOT FORGET TO ADD YOUR NAME / SECTION ABOVE
+            int index = i;
 
+            for (int j = i + 1; j < n; j++) {
+                if (ascending) {
+                    if (values[j] < values[index]) {
+                        index = j;
+                    }
+                } else {
+                    if (values[j] > values[index]) {
+                        index = j;
+                    }
+                }
+            }
+            int tempVal = values[i];
+            values[i] = values[index];
+            values[index] = tempVal;
         }
 
     } // End class selectionSort
 
 
     /**
-     *  Method mergeSortDivisibleByKFirst
-     *
-     *  This method will perform a merge sort algorithm. However, all numbers
-     *  that are divisible by the argument 'k', are returned first in the sorted
-     *  list. Example:
-     *        values = { 10, 3, 25, 8, 6 }, k = 5
-     *        Sorted result should be --> { 10, 25, 3, 6, 8 }
-     *
-     *        values = { 30, 45, 22, 9, 18, 39, 6, 12 }, k = 6
-     *        Sorted result should be --> { 30, 18, 6, 12, 9, 22, 39, 45 }
-     *
+     * Method mergeSortDivisibleByKFirst
+     * <p>
+     * This method will perform a merge sort algorithm. However, all numbers
+     * that are divisible by the argument 'k', are returned first in the sorted
+     * list. Example:
+     * values = { 10, 3, 25, 8, 6 }, k = 5
+     * Sorted result should be --> { 10, 25, 3, 6, 8 }
+     * <p>
+     * values = { 30, 45, 22, 9, 18, 39, 6, 12 }, k = 6
+     * Sorted result should be --> { 30, 18, 6, 12, 9, 22, 39, 45 }
+     * <p>
      * As shown above, this is a normal merge sort operation, except for the numbers
      * divisible by 'k' are first in the sequence.
      *
-     * @param values    - input array to sort per definition above
-     * @param k         - value k, such that all numbers divisible by this value are first
+     * @param values - input array to sort per definition above
+     * @param k      - value k, such that all numbers divisible by this value are first
      */
 
     public void mergeSortDivisibleByKFirst(int[] values, int k) {
 
         // Protect against bad input values
-        if (k == 0)  return;
-        if (values.length <= 1)  return;
+        if (k == 0) return;
+        if (values.length <= 1) return;
 
-        mergeSortDivisibleByKFirst(values, k, 0, values.length-1);
+        mergeSortDivisibleByKFirst(values, k, 0, values.length - 1);
     }
 
     private void mergeSortDivisibleByKFirst(int[] values, int k, int left, int right) {
@@ -83,15 +98,14 @@ public class ProblemSolutions {
         int mid = left + (right - left) / 2;
         mergeSortDivisibleByKFirst(values, k, left, mid);
         mergeSortDivisibleByKFirst(values, k, mid + 1, right);
-        mergeDivisbleByKFirst(values, k, left, mid, right);
+        mergeDivisibleByKFirst(values, k, left, mid, right);
     }
 
     /*
      * The merging portion of the merge sort, divisible by k first
      */
 
-    private void mergeDivisbleByKFirst(int arr[], int k, int left, int mid, int right)
-    {
+    private void mergeDivisibleByKFirst(int arr[], int k, int left, int mid, int right) {
         // YOUR CODE GOES HERE, THIS METHOD IS NO MORE THAN THE STANDARD MERGE PORTION
         // OF A MERGESORT, EXCEPT THE NUMBERS DIVISIBLE BY K MUST GO FIRST WITHIN THE
         // SEQUENCE PER THE DISCUSSION IN THE PROLOGUE ABOVE.
@@ -101,10 +115,51 @@ public class ProblemSolutions {
         // ALLOCATES AUXILIARY DATA STRUCTURES (TEMPORARY ARRAYS). IT WILL BE EASIER
         // TO CODE WITH A SPACE COMPLEXITY OF O(N LOG N), WHICH IS FINE FOR PURPOSES
         // OF THIS PROGRAMMING EXERCISES.
+        int[] tempVal = new int[right - left + 1];
+        int index = 0;
 
-        return;
+        // elements divisible by k
+        for (int i = left; i <= right; i++) {
+            if (arr[i] % k == 0) {
+                tempVal[index++] = arr[i];
+            }
+        }
 
+        // elements NOT divisible by k from both halves
+        for (int i = left; i <= right; i++) {
+            if (arr[i] % k != 0) {
+                tempVal[index++] = arr[i];
+            }
+        }
+
+        //sort elements divisible by k
+//        Arrays.sort(tempVal, 0, divisible(arr, left, right, k));
+//
+//        //sort elements Not divisible by k
+//        Arrays.sort(tempVal, divisible(arr, left, right, k), tempVal.length);
+        int divCount = divisible(arr, left, right, k);
+        Arrays.sort(tempVal, 0, divCount);
+        Arrays.sort(tempVal, divCount, tempVal.length);
+
+        // copy back into original array
+        for (int i = 0; i < tempVal.length; i++) {
+            arr[left + i] = tempVal[i];
+        }
     }
+
+    // counts how many numbers in the array are divisible by k
+    private int divisible(int[] arr, int left, int right, int k) {
+        int count = 0;
+        for (int i = left; i <= right; i++) {
+            if (arr[i] % k == 0) {
+                count++;
+            }
+
+        }
+        return count;
+    }
+
+
 
 
     /**
@@ -155,9 +210,16 @@ public class ProblemSolutions {
     public static boolean asteroidsDestroyed(int mass, int[] asteroids) {
 
         // YOUR CODE GOES HERE, CONSIDER USING ARRAYS.SORT()
+        Arrays.sort(asteroids);
 
-        return false;
-
+        for (int i = 0; i < asteroids.length; i++) {
+            if(mass >= asteroids[i]) {
+                mass += asteroids[i];
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 
 
@@ -193,8 +255,20 @@ public class ProblemSolutions {
     public static int numRescueSleds(int[] people, int limit) {
 
         // YOUR CODE GOES HERE, CONSIDER USING ARRAYS.SORT
+        Arrays.sort(people);
+        int i = 0;
+        int j = people.length -1;
+        int sleds = 0;
 
-        return -1;
+        while(i <= j){
+            if(people[i] + people[j] <= limit) {
+                i++;
+            }
+            j --;
+            sleds++;
+
+        }
+        return sleds;
 
     }
 
